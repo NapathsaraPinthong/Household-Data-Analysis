@@ -2,8 +2,6 @@
 
 ## Commit Conventions
 
-This project follows the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification. Please adhere to the following commit message format:
-
 ```bash
 <type>[optional scope]: <subject>
 ```
