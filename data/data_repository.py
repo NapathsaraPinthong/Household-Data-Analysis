@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 
 # Check if member is dependent based on the given criteria
@@ -33,14 +34,23 @@ def determine_fg_level(row):
     else:
         return -1  # Just in case there's an unexpected situation
 
-def export_hh_total_income(df):
+# Determine income level based on criteria
+def determine_income_level(row):
+    if pd.isna(row['total_income']):
+        return np.nan  # Handle NaN values
+    elif row['total_income'] < 100000:
+        return 1
+    elif row['total_income'] >= 100000:
+        return 2
+
+def export_hh_income_level(df, path_name):
     household_summary = df.groupby('hh_id').agg(
         total_income=pd.NamedAgg(column='sum_income', aggfunc='sum')
     ).reset_index()
-    
-    df_summary = df.merge(household_summary[['hh_id', 'total_income']], on='hh_id', how='left')
-    export_df = df_summary[['hh_id', 'total_income']].copy()
-    return export_df
+    household_summary['income_level'] = household_summary.apply(determine_income_level, axis=1)
+    df_summary = df.merge(household_summary[['hh_id', 'income_level']], on='hh_id', how='left')
+    export_df = df_summary[['hh_id', 'income_level']].copy()
+    export_df.to_excel(path_name, index=False, header=False)
     
 
 def export_hh_fg_level(df, path_name):
