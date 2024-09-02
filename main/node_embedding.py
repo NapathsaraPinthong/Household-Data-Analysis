@@ -16,7 +16,9 @@ print(
     )
 )
 
-walk_length = 50  # maximum length of a random walk to use throughout this notebook
+# ----- Parameter ----- #
+walk_length = 50  
+window_size = 5
 
 # specify the metapath schemas as a list of lists of node types.
 metapaths = [
@@ -41,13 +43,13 @@ walks = rw.run(
 
 print("Number of random walks: {}".format(len(walks)))
 
-model = Word2Vec(walks, vector_size=128, window=5, min_count=0, sg=1, workers=2, epochs=1)
+model = Word2Vec(walks, vector_size=128, window=window_size, min_count=0, sg=1, workers=2, epochs=1)
 
 # Retrieve node embeddings and corresponding subjects
 node_ids = model.wv.index_to_key  # list of node IDs
 node_embeddings = (
     model.wv.vectors
-)  # numpy.ndarray of size number of nodes times embeddings dimensionality
+)  
 node_targets = [g.node_type(node_id) for node_id in node_ids]
 
 trans = transform(n_components=2)

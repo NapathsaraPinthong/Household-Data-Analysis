@@ -79,7 +79,7 @@ try:
     df = pd.DataFrame(results)
         
     #Save the DataFrame to an Excel file
-    file_path = '../dataset/edge/hh_fg-level.xlsx'
+    file_path = '../dataset/edge/hh-fg_level.xlsx'
     export_hh_fg_level(df, file_path)
     print(f"DataFrame saved to {file_path}") 
     
