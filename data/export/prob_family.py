@@ -13,6 +13,12 @@ try:
     
     pipeline = [
     {
+        '$match': {
+            'status': {
+                '$ne': 'removed'
+            }
+        }
+    },{
         '$project': {
             'prob_family': {
                 '$map': {
@@ -25,7 +31,7 @@ try:
     }, {
         '$unwind': {
             'path': '$prob_family', 
-            'preserveNullAndEmptyArrays': True
+            'preserveNullAndEmptyArrays': False
         }
     }
 ]
@@ -33,9 +39,10 @@ try:
     # Execute the aggregation pipeline
     results = list(mb_collection.aggregate(pipeline))
     df = pd.DataFrame(results)
+    df = extract_number_from_code(df, 'prob_family')
         
     #Save the DataFrame to an Excel file
-    file_path = '../dataset/edge/mb_prob-family.xlsx'
+    file_path = '../dataset/edge/mb-prob_family.xlsx'
     df.to_excel(file_path, index=False, header=False)
     print(f"DataFrame saved to {file_path}") 
     
