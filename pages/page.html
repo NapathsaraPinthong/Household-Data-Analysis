@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Node Embeddings Plots</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Use jQuery to load JSON -->
+    <style>
+        #dbscan-plot, #kmeans-plot, #gmm-plot, #hierarchical-plot {
+            height: 600px;
+            width: 800px;
+            overflow: hidden; /* ensures proper handling of content */
+        }
+    </style>
+</head>
+<body>
+    <h1>Experiment on Clustering Methods on TSNE Visualization of 'Household' Node Embeddings</h1>
+
+    <div id="dbscan-plot"></div>
+    <div id="kmeans-plot"></div>
+    <div id="gmm-plot"></div>
+    <div id="hierarchical-plot"></div>
+
+    <!-- Container to display node details -->
+    <div id="node-details">
+        <h3>Node Details</h3>
+        <p id="details"></p>
+    </div>
+
+    <script>
+        var plotDivs = {};
+        var plotData = {}; // Store plot data to reference later
+
+        // Function to render a Plotly plot and add click event listener
+        function renderPlot(plotId, jsonFile) {
+            $.getJSON(jsonFile, function(data) {
+                plotData[plotId] = data; // Store plot data
+
+                // Render the plot
+                Plotly.newPlot(plotId, data.data, data.layout);
+
+                // Store plotDiv reference
+                plotDivs[plotId] = document.getElementById(plotId);
+
+                // Add click event listener
+                plotDivs[plotId].on('plotly_click', function(eventData) {
+                    var point = eventData.points[0];
+                    var nodeId = point.text;  // Get the node ID or any other info
+
+                    if (nodeId) {
+                        displayNodeDetails(nodeId);  // Call the function to display node details
+                        updateNodeStyle(plotId, nodeId); // Highlight the selected node
+                    } else {
+                        console.log('No node ID found in click data');
+                    }
+                });
+            });
+        }
+
+        renderPlot('dbscan-plot', 'dbscan_plot.json');
+        renderPlot('kmeans-plot', 'kmeans_plot.json');
+        renderPlot('gmm-plot', 'gmm_plot.json');
+        renderPlot('hierarchical-plot', 'hierarchical_plot.json');
+
+        // Function to display node details
+        function displayNodeDetails(nodeId) {
+            var details = "Node ID: " + nodeId + "<br>Other data: ...";
+            document.getElementById('details').innerHTML = details;
+        }
+    </script>
+</body>
+</html>
