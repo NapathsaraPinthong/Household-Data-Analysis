@@ -30,3 +30,28 @@ print(f"House 2: {distance_hh2}")
 print(f"House 3: {distance_hh3}")
 print(f"House 4: {distance_hh4}")
 print(f"House 5: {distance_hh5}")
+
+# -------- Calculate Centroids for Each Level -------- #
+centroid_lv_minus_1 = calculate_centroid(-1, embedding_df)
+centroid_lv0 = calculate_centroid(0, embedding_df)
+centroid_lv1 = calculate_centroid(1, embedding_df)
+centroid_lv2 = calculate_centroid(2, embedding_df)
+centroid_lv3 = calculate_centroid(3, embedding_df)
+
+centroids = {
+    -1: centroid_lv_minus_1,
+    0: centroid_lv0,
+    1: centroid_lv1,
+    2: centroid_lv2,
+    3: centroid_lv3
+}
+
+# Calculate centroid distances
+centroid_distances = calculate_all_centroid_distances(centroids)
+
+# Print centroid distances for all combinations
+for (level_1, level_2), distance in centroid_distances.items():
+    if distance is not None:
+        print(f"Distance between Fragile Level {level_1} and {level_2}: {distance}")
+    else:
+        print(f"Distance between Fragile Level {level_1} and {level_2}: -")
