@@ -11,16 +11,10 @@ def is_dependent(member):
     is_patient = False
 
     if isinstance(member["prob_family"], list):
-        is_single_parent = any(
-            code in ["PBFA14", "PBFA25"]
-            for code in [item.get("code") for item in member["prob_family"]]
-        )
+        is_single_parent = any(code in ["PBFA14", "PBFA25"] for code in member["prob_family"])
 
     if isinstance(member["prob_health"], list):
-        is_patient = any(
-            code in ["PBHE4", "PBHE8"]
-            for code in [item.get("code") for item in member["prob_health"]]
-        )
+        is_patient = any(code in ["PBHE4", "PBHE8"] for code in member["prob_health"])
 
     if "age" in member:
         is_senior = member["age"] >= 60
@@ -30,25 +24,25 @@ def is_dependent(member):
 
 # Determine fragile level based on criteria
 def determine_fg_level(row):
-    if row["total_income"] >= 100000 and row["num_dependents"] >= 1:
+    if row["total_income"] * 12  >= 100000 and row["num_dependents"] >= 1:
         return 0
-    elif row["total_income"] < 100000 and row["num_dependents"] == 0:
+    elif row["total_income"] * 12  < 100000 and row["num_dependents"] == 0:
         return 1
-    elif row["total_income"] < 100000 and 1 <= row["num_dependents"] <= 2:
+    elif row["total_income"] * 12  < 100000 and 1 <= row["num_dependents"] <= 2:
         return 2
-    elif row["total_income"] < 100000 and row["num_dependents"] > 2:
+    elif row["total_income"] * 12  < 100000 and row["num_dependents"] > 2:
         return 3
     else:
-        return -1  # Just in case there's an unexpected situation
+        return -1  
 
 
 # Determine income level based on criteria
 def determine_income_level(row):
     if pd.isna(row["total_income"]):
-        return np.nan  # Handle NaN values
-    elif row["total_income"] < 100000:
+        return np.nan  
+    elif row["total_income"] * 12 < 100000:
         return 1
-    elif row["total_income"] >= 100000:
+    elif row["total_income"] * 12 >= 100000:
         return 2
 
 
@@ -61,16 +55,14 @@ def export_hh_income_level(df, path_name):
     household_summary["income_level"] = household_summary.apply(
         determine_income_level, axis=1
     )
-    df_summary = df.merge(
-        household_summary[["hh_id", "income_level"]], on="hh_id", how="left"
-    )
-    export_df = df_summary[["hh_id", "income_level"]].copy()
+    export_df = household_summary[["hh_id", "income_level"]].copy()
     export_df.to_excel(path_name, index=False, header=False)
 
 
 def export_hh_fg_level(df, path_name):
     # Calculate if each member is dependent
     df["is_dependent"] = df.apply(is_dependent, axis=1)
+    
     # Aggregate household income and count dependents for each household
     household_summary = (
         df.groupby("hh_id")
@@ -81,12 +73,8 @@ def export_hh_fg_level(df, path_name):
         .reset_index()
     )
     household_summary["fg_level"] = household_summary.apply(determine_fg_level, axis=1)
-    # Merge the fg_level back to the original DataFrame
-    df = df.merge(household_summary[["hh_id", "fg_level"]], on="hh_id", how="left")
-
-    # Prepare DataFrame for export with member ID and income level
-    export_df = df[["hh_id", "fg_level"]].copy()
-    # Export to Excel without header
+  
+    export_df = household_summary[["hh_id", "fg_level"]].copy()
     export_df.to_excel(path_name, index=False, header=False)
 
 
