@@ -2,7 +2,7 @@ import pandas as pd
 from fragile_level_utils import *
 from hh_mb_utils import *
 
-file_path = "../main/node_embeddings.xlsx"
+file_path = "../main/result/node_embeddings_10_5.xlsx"
 column_names = ["node_id", "value", "node_target"]
 embedding_df = pd.read_excel(file_path, header=None, names=column_names)
 
