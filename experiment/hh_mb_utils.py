@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 import ast
 
-# Function to sample 700 household IDs and save to a CSV file
+# Function to sample 14,000 household IDs and save to a CSV file
 def sample_and_save_households(hh_file_path, output_file, sample_size=14000):
     hh_df = pd.read_excel(hh_file_path, header=None, names=["mb_id", "hh_id"])
     

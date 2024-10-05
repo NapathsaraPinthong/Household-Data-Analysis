@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import ast
 
-# Function to get a 10% sample group from each province and save to a static file
+# Function to get a 20% sample group from each province and save to a static file
 def get_sample_group_with_embeddings_and_fg_level(province_codes, embedding_df, sample_percentage=0.2):
     file_path = "../data/dataset/edge/hh-province_code.xlsx"
     column_names = ["hh_id", "province_code"]
