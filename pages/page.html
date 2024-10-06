@@ -4,26 +4,71 @@
     <meta charset="UTF-8">
     <title>Node Embeddings Plots</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Use jQuery to load JSON -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        #dbscan-plot, #kmeans-plot, #gmm-plot, #hierarchical-plot {
-            height: 600px;
-            width: 800px;
-            overflow: hidden; /* ensures proper handling of content */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+        }
+        /* Scrollable container */
+        .scroll-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            margin: 0 auto;
+            width: 100vw; /* Ensure the container fits the viewport width */
+        }
+        /* Individual plot containers */
+        .plot-container {
+            flex: 0 0 100vw; /* Each plot takes up 100% of the viewport width */
+            display: flex;
+            justify-content: center; /* Centers the content horizontally */
+            align-items: center; /* Centers the content vertically */
+        }
+        /* Scroll buttons */
+        .scroll-button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        #scroll-left {
+            left: 50px;
+        }
+        #scroll-right {
+            right: 50px;
+        }
+        #node-details {
+            text-align: center;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <h1>Experiment on Clustering Methods on TSNE Visualization of 'Household' Node Embeddings</h1>
+    <div id="carousel-container" style="position: relative;">
+        <!-- Scroll buttons -->
+        <button id="scroll-left" class="scroll-button">←</button>
+        <button id="scroll-right" class="scroll-button">→</button>
 
-    <div id="dbscan-plot"></div>
-    <div id="kmeans-plot"></div>
-    <div id="gmm-plot"></div>
-    <div id="hierarchical-plot"></div>
+        <!-- Scrollable container for plots -->
+        <div class="scroll-container" id="plots-carousel">
+            <div class="plot-container" id="dbscan-plot"></div>
+            <div class="plot-container" id="kmeans-plot"></div>
+            <div class="plot-container" id="gmm-plot"></div>
+            <div class="plot-container" id="hierarchical-plot"></div>
+        </div>
+    </div>
 
     <!-- Container to display node details -->
     <div id="node-details">
-        <h3>Node Details</h3>
+        <h3>Click to see the Household Node Details</h3>
         <p id="details"></p>
     </div>
 
@@ -49,7 +94,6 @@
 
                     if (nodeId) {
                         displayNodeDetails(nodeId);  // Call the function to display node details
-                        updateNodeStyle(plotId, nodeId); // Highlight the selected node
                     } else {
                         console.log('No node ID found in click data');
                     }
@@ -57,16 +101,27 @@
             });
         }
 
-        renderPlot('dbscan-plot', 'dbscan_plot.json');
-        renderPlot('kmeans-plot', 'kmeans_plot.json');
-        renderPlot('gmm-plot', 'gmm_plot.json');
-        renderPlot('hierarchical-plot', 'hierarchical_plot.json');
+        renderPlot('dbscan-plot', './clustering_plot/dbscan_plot.json');
+        renderPlot('kmeans-plot', './clustering_plot/kmeans_plot.json');
+        renderPlot('gmm-plot', './clustering_plot/gmm_plot.json');
+        renderPlot('hierarchical-plot', './clustering_plot/hierarchical_plot.json');
 
         // Function to display node details
         function displayNodeDetails(nodeId) {
-            var details = "Node ID: " + nodeId + "<br>Other data: ...";
+            var details = "Node ID: " + nodeId;
             document.getElementById('details').innerHTML = details;
         }
+
+        // Scroll functionality for the carousel
+        var carousel = document.getElementById('plots-carousel');
+
+        document.getElementById('scroll-left').addEventListener('click', function() {
+            carousel.scrollBy({ left: -carousel.offsetWidth, behavior: 'smooth' });
+        });
+
+        document.getElementById('scroll-right').addEventListener('click', function() {
+            carousel.scrollBy({ left: carousel.offsetWidth, behavior: 'smooth' });
+        });
     </script>
 </body>
 </html>
