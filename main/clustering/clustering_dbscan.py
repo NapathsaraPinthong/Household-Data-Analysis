@@ -9,6 +9,10 @@ import json
 file_path = '../result/node_embeddings_70_10.xlsx'
 df = pd.read_excel(file_path)
 
+fg_level_file_path = '../../data/dataset/edge/hh-fg_level.xlsx'
+fg_level_df = pd.read_excel(fg_level_file_path, header=None, names=["hh", "fg_level"])
+fg_level_df['node_id'] = 'hh' + fg_level_df['hh'].astype(str)
+
 # Split 'value' into separate 'x' and 'y' columns
 df['value'] = df['value'].apply(ast.literal_eval)
 df[['x', 'y']] = pd.DataFrame(df['value'].tolist(), index=df.index)
@@ -30,6 +34,11 @@ clusters = household_df['cluster'].tolist()
 unique_clusters = np.unique(clusters)
 label_map = {cluster: i for i, cluster in enumerate(unique_clusters)}
 cluster_colors = [label_map[cluster] for cluster in clusters]
+
+cluster_df = household_df[['node_id', 'cluster']]
+cluster_df = pd.merge(cluster_df, fg_level_df.drop(columns=['hh']), on='node_id', how='inner')
+cluster_df.to_excel('./dbscan_clusters.xlsx',index=False)
+print("Household's cluster label by DBSCAN saved to './dbscan_clusters.xlsx'")
 
 # Create the scatter plot using Plotly
 fig = go.Figure()
