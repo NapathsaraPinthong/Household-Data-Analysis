@@ -9,6 +9,10 @@ from sklearn.cluster import KMeans
 file_path = '../result/node_embeddings_70_10.xlsx'
 df = pd.read_excel(file_path)
 
+fg_level_file_path = '../../data/dataset/edge/hh-fg_level.xlsx'
+fg_level_df = pd.read_excel(fg_level_file_path, header=None, names=["hh", "fg_level"])
+fg_level_df['node_id'] = 'hh' + fg_level_df['hh'].astype(str)
+
 # Split 'value' into separate 'x' and 'y' columns
 df['value'] = df['value'].apply(ast.literal_eval)
 df[['x', 'y']] = pd.DataFrame(df['value'].tolist(), index=df.index)
@@ -22,7 +26,7 @@ node_ids = household_df['node_id'].tolist()
 node_embeddings_2d = household_df[['x', 'y']].values
 
 # Apply KMeans clustering to the filtered household data
-kmeans = KMeans(n_clusters=4, random_state=42)
+kmeans = KMeans(n_clusters=3, random_state=42)
 household_df['cluster'] = kmeans.fit_predict(node_embeddings_2d)
 
 # Define colors for clusters
@@ -30,6 +34,11 @@ clusters = household_df['cluster'].tolist()
 unique_clusters = np.unique(clusters)
 label_map = {cluster: i for i, cluster in enumerate(unique_clusters)}
 cluster_colors = [label_map[cluster] for cluster in clusters]
+
+cluster_df = household_df[['node_id', 'cluster']]
+cluster_df = pd.merge(cluster_df, fg_level_df.drop(columns=['hh']), on='node_id', how='inner')
+cluster_df.to_excel('./kmeans_clusters.xlsx',index=False)
+print("Household's cluster label by Kmeans saved to './kmeans_clusters.xlsx'")
 
 # Create the scatter plot using Plotly
 fig = go.Figure()

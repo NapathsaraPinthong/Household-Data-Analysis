@@ -9,7 +9,7 @@ pio.renderers.default = 'browser'
 transform = TSNE  # PCA
 
 # Read the Excel file
-file_path = './node_embeddings.xlsx'
+file_path = './result/node_embeddings_70_10.xlsx'
 df = pd.read_excel(file_path)
 
 # Split 'value' into separate 'x' and 'y' columns
