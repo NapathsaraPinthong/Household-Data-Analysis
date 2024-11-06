@@ -97,13 +97,6 @@ def evaluate_fg_level_distribution(file_path, attributes_dict_path):
     print("Percentage distribution of fg_level within each cluster using " + file_path)
     print(fg_level_percentage)
 
-import pandas as pd
-import pickle
-
-import pandas as pd
-import numpy as np
-import pickle
-
 def analyze_cluster_attributes(cluster_file, hh_member_dict_file, household_attributes_file, member_attributes_file):
     # Load cluster data
     cluster_df = pd.read_excel(cluster_file)
@@ -178,8 +171,7 @@ def analyze_cluster_attributes(cluster_file, hh_member_dict_file, household_attr
     results_df = pd.DataFrame.from_dict(attribute_counts, orient='index').reset_index()
     results_df = results_df.rename(columns={'index': 'Cluster'})
 
-    # Export or print the result
-    print(results_df)
+    # Export result to an excel file
     output_file = f'./analysis/{cluster_file.split("/")[2].split(".")[0]}_attributes_analysis.xlsx'
     results_df.to_excel(output_file, index=False)
     print(f"Analysis results saved to '{output_file}'")
