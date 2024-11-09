@@ -107,11 +107,11 @@ def analyze_cluster_attributes(cluster_file, hh_member_dict_file, household_attr
     # Load household-member mapping
     with open(hh_member_dict_file, 'rb') as f:
         hh_member_dict = pickle.load(f)
-    
+
     # Load household and member attributes
     with open(household_attributes_file, 'rb') as f:
         household_attributes = pickle.load(f)
-        
+
     with open(member_attributes_file, 'rb') as f:
         member_attributes = pickle.load(f)
 
@@ -121,28 +121,35 @@ def analyze_cluster_attributes(cluster_file, hh_member_dict_file, household_attr
     # Iterate over clusters in the cluster file
     for cluster_id in sorted(cluster_df['cluster'].unique()):
         cluster_households = cluster_df[cluster_df['cluster'] == cluster_id]['node_id']
-        
+
         # Initialize the counts for this cluster
         cluster_counts = {
             'income_level1': 0, 'income_level2': 0, 'solid0': 0, 'solid1': 0,
-            'fg_level-1': 0, 'fg_level0': 0, 'fg_level1': 0, 'fg_level2': 0, 'fg_level3': 0,
+            **{f'dependent_member{i}': 0 for i in range(0, 6)},
             'age1': 0, 'age2': 0, 'age3': 0, 'age4': 0, 'age5': 0,
             'disabled0': 0, 'disabled1': 0,
-            # Prob family and health levels
             **{f'prob_family{i}': 0 for i in range(1, 26)},
-            **{f'prob_health{i}': 0 for i in range(1, 14)}
+            **{f'prob_health{i}': 0 for i in range(1, 14)},
+            'fg_level-1': 0, 'fg_level0': 0, 'fg_level1': 0, 'fg_level2': 0, 'fg_level3': 0
         }
 
         # Process each household in the cluster
         for hh_id in cluster_households:
             # Get household attributes
             hh_attributes = household_attributes.get(hh_id, {})
-            # Update household-related attributes
+
+            # Initialize flags for member attributes to avoid double-counting
+            member_flags = {key: False for key in cluster_counts.keys()}
+
+            # Initialize dependent member count
+            dependent_count = 0
+
+            # Update household-related attributes (direct count)
             for attr, value in hh_attributes.items():
                 attr = attr + str(value)
                 if attr in cluster_counts:
                     cluster_counts[attr] += 1
-            
+
             # Process each member in the household
             members = hh_member_dict.get(hh_id, [])
             for member_id in members:
@@ -150,19 +157,39 @@ def analyze_cluster_attributes(cluster_file, hh_member_dict_file, household_attr
                 member_id = np.int64(int(member_id))
                 member_attributes_data = member_attributes.get(member_id, {})
 
-                # Update member-related attributes
+                # Check if the member is dependent based on the criteria
+                is_dependent = (
+                    member_attributes_data.get('age', 0) != np.int64(4) or
+                    member_attributes_data.get('disabled', 0) == np.int64(1) or
+                    np.int64(4) in member_attributes_data.get('prob_health', []) or
+                    np.int64(8) in member_attributes_data.get('prob_health', []) or
+                    np.int64(14) in member_attributes_data.get('prob_family', []) or
+                    np.int64(25) in member_attributes_data.get('prob_family', [])
+                )
+
+                # Increment dependent count if the member is dependent
+                if is_dependent:
+                    dependent_count += 1
+
+                # Update member-related attributes (only count once per household)
                 for attr, value in member_attributes_data.items():
-                    # Handle prob_family and prob_health as lists
                     if attr in ["prob_family", "prob_health"]:
                         for val in value:
                             list_attr = f"{attr}{val}"
-                            if list_attr in cluster_counts:
+                            if list_attr in cluster_counts and not member_flags[list_attr]:
                                 cluster_counts[list_attr] += 1
+                                member_flags[list_attr] = True
                     else:
-                        # Handle single-valued attributes
                         attr = attr + str(value)
-                        if attr in cluster_counts:
+                        if attr in cluster_counts and not member_flags[attr]:
                             cluster_counts[attr] += 1
+                            member_flags[attr] = True
+
+            # Update dependent member counts (capped at 5)
+            if dependent_count >= 5:
+                cluster_counts['dependent_member5'] += 1
+            else:
+                cluster_counts[f'dependent_member{dependent_count}'] += 1
 
         # Store the counts for this cluster
         attribute_counts[cluster_id] = cluster_counts
@@ -171,7 +198,7 @@ def analyze_cluster_attributes(cluster_file, hh_member_dict_file, household_attr
     results_df = pd.DataFrame.from_dict(attribute_counts, orient='index').reset_index()
     results_df = results_df.rename(columns={'index': 'Cluster'})
 
-    # Export result to an excel file
+    # Export result to an Excel file
     output_file = f'./analysis/{cluster_file.split("/")[2].split(".")[0]}_attributes_analysis.xlsx'
     results_df.to_excel(output_file, index=False)
     print(f"Analysis results saved to '{output_file}'")
@@ -186,7 +213,7 @@ def analyze_cluster_attributes(cluster_file, hh_member_dict_file, household_attr
 # )
 
 # analyze_cluster_attributes(
-#     cluster_file='./result/hierarchical_clusters_k3.xlsx',
+#     cluster_file='./result/gmm_clusters_k6.xlsx',
 #     hh_member_dict_file='../static/hh_member_dict.pkl',
 #     household_attributes_file='../static/household_attributes.pkl',
 #     member_attributes_file='../static/member_attributes.pkl'

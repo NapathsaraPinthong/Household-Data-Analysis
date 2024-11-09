@@ -2,11 +2,9 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import ast
-from sklearn.manifold import TSNE
 import plotly.io as pio
 
 pio.renderers.default = 'browser'
-transform = TSNE  # PCA
 
 # Read the Excel file
 file_path = './result/node_embeddings_70_10.xlsx'
@@ -46,25 +44,20 @@ fig.add_trace(go.Scattergl(
     marker=dict(
         color=node_colours,
         colorscale='Viridis',  # Use the same color scale as in Matplotlib
-        opacity=0.3,
+        opacity=0.8,
         colorbar=dict(title='Node Types')
     ),
     text=node_ids,  # Add tooltips using node_ids
     hoverinfo='text'
 ))
 
-fig.update_traces(marker=dict(size=8, line=dict(width=2, color='DarkSlateGrey')), selector=dict(mode='markers'))
-
-# Get the name of the transform class
-transform_name = transform.__name__
-
 # Set the title and layout
 fig.update_layout(
-    title=f"{transform_name} visualization of node embeddings",
+    title=f"Fragile level visualization of node embeddings",
     xaxis_title="X",
     yaxis_title="Y",
-    width=800,
-    height=600,
+    width=880,
+    height=660,
     legend=dict(
         x=1.02,  # Position the legend to the right of the plot
         y=-0.2,   # Align the legend vertically to the center
