@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Inter", sans-serif;
+}
+
+a {
+    text-decoration: none;
+    color: #47467A;
+}
+
+nav {
+    padding-left: 55px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+nav ul {
+    display: flex;
+    gap: 48px;
+}
+
+nav ul li {
+    list-style: none;
+}
+
+nav a.active {
+    font-weight: bold;
+    border-bottom: 2px solid #43419A;
+}
+  
+
+h1 {
+    text-align: center;
+    padding-top: 36px;
+    padding-bottom: 36px;
+    text-transform: uppercase;
+    color: #47467A;
+}
+
+.select-section {
+    /* background-color: #888888; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 150px;
+}
+
+.select-clustering {
+    display: flex;
+    gap: 16px;
+    font-size: 20px;
+    font-weight: 400;
+    color: #47467A;
+    align-items: center;
+}
+
+.select-clustering button {
+    font-size: 16px;
+    background-color: transparent;
+    border-radius: 10px;
+    width: 124px;
+    height: 37px;
+    border-color: #43419A;
+    cursor: pointer;
+    color: #43419A;
+    margin-right: 16px;
+}
+
+.select-clustering button.active {
+    background-color: #43419A;
+    color: white;
+    box-shadow: 0 2px 2px 0px rgba(0, 0, 0, 0.25);
+}
+
+.select-compare {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.select-compare input[type="checkbox"] {
+    width: 24px;
+    height: 24px;
+    accent-color: #43419A;
+}
+  
+.select-compare label {
+    font-size: 16px;
+    color: #47467A;
+}
+
+.render-plot {
+    display: flex;
+    justify-content: center;
+    width: 100vw;
+    margin-top: 15px;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #43419A;
+    color: white;
+    text-align: center;
+    font-size: 14px;
+    padding: 12px 0;
+}
