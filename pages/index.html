@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Household Data Analysis</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <nav>
+        <ul>
+          <li><a href="./index.html" id="nav-household">Household Classification</a></li>
+          <li><a href="./search.html" id="nav-search">Search By Attributes</a></li>
+        </ul>
+      </nav>
+    <h1>Household Data Analysis using Graph Techniques</h1>
+
+    <!-- Selecting Section -->
+    <div class="select-section">
+      <div class="select-clustering">
+        <p>Clustering Techniques:</p>
+        <button onclick="loadPlot('gmm-plot')">GMM</button>
+        <button onclick="loadPlot('kmeans-plot')">K-Means</button>
+        <button onclick="loadPlot('hierarchical-plot')">Hierarchical</button>
+      </div>
+
+      <div class="select-compare">
+        <input type="checkbox" id="compare-fg" name="compare" value="true" />
+        <label for="compare-fg">Compare with Fragile Level</label>
+      </div>
+    </div>
+
+    <!-- Rendering Plot Section -->
+    <div class="render-plot">
+        <div id="clustering_plot"></div>
+        <div id="fragile_plot"></div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+      <p>DES400 PROJECT DEVELOPMENT - YEAR 1/2024</p>
+    </footer>
+
+    <script src="./scripts.js"></script>
+  </body>
+</html>
