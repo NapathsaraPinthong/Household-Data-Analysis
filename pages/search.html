@@ -15,17 +15,53 @@
           <a href="./index.html" id="nav-household">Household Classification</a>
         </li>
         <li>
-          <a href="./search.html" id="nav-search">Search By Attributes</a>
+          <a href="./search.html" id="nav-search">Filter By Attributes</a>
         </li>
       </ul>
     </nav>
     <h1>Household Data Analysis using Graph Techniques</h1>
 
+    <!-- Selecting Section -->
+    <div class="select-section">
+      <!-- Select Attribute Dropdown -->
+      <div class="select-attribute">
+        <p>Filter:</p>
+        <select name="attr" id="attr">
+          <option value="" disabled selected>Select Attribute</option>
+          <option value="income_level">Income Level</option>
+          <option value="solid">Household Solidity</option>
+          <option value="dependent">No. of Dependent Members</option>
+          <option value="age">Age Range</option>
+          <option value="disabled">Disability</option>
+          <option value="prob_health">Health Problem</option>
+          <option value="prob_family">Family Problem</option>
+        </select>
+
+        <!-- Select Value Dropdown -->
+        <select name="attr" id="attr-val">
+          <option value="" disabled selected>Select Value</option>
+        </select>
+
+        <input type="submit" value="Submit" />
+      </div>
+
+      <div class="select-compare">
+        <input type="checkbox" id="compare-ctr" name="compare" value="true" />
+        <label for="compare-ctr">Compare with Our Clustering</label>
+      </div>
+    </div>
+
+    <!-- Rendering Filtered Plot Section -->
+    <div class="render-plot">
+      <div id="filtered_plot"></div>
+      <div id="compare_custering_plot"></div>
+    </div>
+
     <!-- Footer Section -->
     <footer>
-      <p>DES400 PROJECT DEVELOPMENT - YEAR 1/2024</p>
+      <p>DES400 PROJECT DEVELOPMENT &emsp; YEAR 1/2024 &emsp; GROUP CN24</p>
     </footer>
 
-    <script src="./scripts.js"></script>
+    <script src="./search.js"></script>
   </body>
 </html>
