@@ -43,14 +43,13 @@ h1 {
 }
 
 .select-section {
-    /* background-color: #888888; */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 150px;
+    padding: 0 130px;
 }
 
-.select-clustering {
+.select-clustering, .select-attribute {
     display: flex;
     gap: 16px;
     font-size: 20px;
@@ -111,4 +110,27 @@ footer {
     text-align: center;
     font-size: 14px;
     padding: 12px 0;
+}
+
+.select-attribute select {
+    background-color: transparent;
+    border: 1px solid #43419A;
+    border-radius: 10px;
+    width: 250px;
+    height: 37px;
+    font-size: 16px;
+    padding-left: 8px;
+    padding-right: 8px;
+    color: #47467A;
+}
+
+.select-attribute input[type="submit"] {
+    font-size: 16px;
+    background-color: #43419A;
+    border-radius: 10px;
+    width: 124px;
+    height: 37px;
+    cursor: pointer;
+    color: #FFFFFF;
+    text-transform: uppercase;
 }
