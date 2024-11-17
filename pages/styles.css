@@ -134,3 +134,23 @@ footer {
     color: #FFFFFF;
     text-transform: uppercase;
 }
+
+.select-attribute.multiple {
+    width: 70%;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.select-attribute.multiple #attr-val-container {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 16px;
+    column-gap: 16px;
+    row-gap: 8px;
+}
+
+.select-attribute.multiple #attr-val-container input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #43419A;
+}

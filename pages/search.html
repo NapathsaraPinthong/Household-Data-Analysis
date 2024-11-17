@@ -24,7 +24,7 @@
     <!-- Selecting Section -->
     <div class="select-section">
       <!-- Select Attribute Dropdown -->
-      <div class="select-attribute">
+      <div class="select-attribute" id="select-attribute-con">
         <p>Filter:</p>
         <select name="attr" id="attr">
           <option value="" disabled selected>Select Attribute</option>
@@ -37,10 +37,9 @@
           <option value="prob_family">Family Problem</option>
         </select>
 
-        <!-- Select Value Dropdown -->
-        <select name="attr" id="attr-val">
-          <option value="" disabled selected>Select Value</option>
-        </select>
+        <div id="attr-val-container">
+          <!-- Dynamic inputs (checkboxes or dropdown) will be rendered here -->
+        </div>
 
         <input type="submit" value="Submit" />
       </div>
@@ -59,7 +58,7 @@
 
     <!-- Footer Section -->
     <footer>
-      <p>DES400 PROJECT DEVELOPMENT &emsp; YEAR 1/2024 &emsp; GROUP CN24</p>
+      <p>DES400 PROJECT DEVELOPMENT &emsp; YEAR 1/2024 &emsp; GROUP CN2</p>
     </footer>
 
     <script src="./search.js"></script>
