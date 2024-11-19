@@ -3,8 +3,8 @@ const currentPage = window.location.pathname.split("/").pop();
 
 // Map pages to their corresponding nav link IDs
 const pageMap = {
-  "index.html": "nav-household",
-  "search.html": "nav-search",
+  "": "nav-household",
+  search: "nav-search",
 };
 
 // Check if the current page is in the pageMap and apply the active class
@@ -62,7 +62,7 @@ const attributeValues = {
     12: "Depression",
     13: "No right to medical treatment",
   },
-  prob_family: { 
+  prob_family: {
     1: "Orphan",
     2: "Broken family/parents separated",
     3: "Foster family",
@@ -93,11 +93,11 @@ const attributeValues = {
 
 // Populate the second dropdown based on the selected attribute
 $("#attr").on("change", function () {
-  const selectedAttrCon = document.getElementById("select-attribute-con")
+  const selectedAttrCon = document.getElementById("select-attribute-con");
   const selectedAttr = $(this).val();
   const values = attributeValues[selectedAttr] || {};
 
-  const $attrValContainer = $("#attr-val-container"); 
+  const $attrValContainer = $("#attr-val-container");
   $attrValContainer.empty();
 
   if (selectedAttr === "prob_health" || selectedAttr === "prob_family") {
@@ -110,8 +110,7 @@ $("#attr").on("change", function () {
       `);
     });
 
-    selectedAttrCon.classList.add("multiple")
-
+    selectedAttrCon.classList.add("multiple");
   } else {
     // Create a single-select dropdown for other attributes
     const $select = $('<select id="attr-val"></select>').append(
@@ -122,7 +121,7 @@ $("#attr").on("change", function () {
     });
 
     $attrValContainer.append($select);
-    selectedAttrCon.classList.remove("multiple")
+    selectedAttrCon.classList.remove("multiple");
   }
 });
 
