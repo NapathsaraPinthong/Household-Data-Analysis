@@ -69,7 +69,7 @@ def perform_hierarchical_clustering(file_path, k, output_excel_path, output_json
 
     fig.update_layout(
         title={
-            'text': "Hierarchical Clustering",
+            'text': f"Hierarchical Clustering (k={k})",
             'x': 0.5,
             'xanchor': 'center'
         },
@@ -77,8 +77,8 @@ def perform_hierarchical_clustering(file_path, k, output_excel_path, output_json
         yaxis_title="Y",
         width=880,
         height=660,
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0.05)'
+        plot_bgcolor='#E5ECF6',
+        paper_bgcolor='white'
     )
 
     # Convert all NumPy arrays to lists in plot_data
@@ -99,8 +99,8 @@ def perform_hierarchical_clustering(file_path, k, output_excel_path, output_json
 # Example usage
 if __name__ == "__main__":
     file_path = '../../main/result/node_embeddings_70_10.xlsx'
-    k = 6
-    output_excel_path = './result/hierarchical_clusters_k6.xlsx'  # Adjust file name based on k
-    output_json_path = '../../pages/clustering_plot/hierarchical_plot_k6.json'  # Adjust file name based on k
+    k = 5
+    output_excel_path = './result/hierarchical_clusters_k5.xlsx'  # Adjust file name based on k
+    output_json_path = '../../pages/clustering_plot/hierarchical_plot_k5.json'  # Adjust file name based on k
 
     perform_hierarchical_clustering(file_path, k, output_excel_path, output_json_path)

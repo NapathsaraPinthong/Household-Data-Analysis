@@ -55,8 +55,8 @@ def perform_kmeans_clustering(file_path, k, output_excel_path, output_json_path)
         yaxis_title="Y",
         width=880,
         height=660,
-        plot_bgcolor='rgba(0,0,0,0)',
-        paper_bgcolor='rgba(0,0,0,0.05)'
+        plot_bgcolor='#E5ECF6',
+        paper_bgcolor='white'
     )
 
     # Convert all NumPy arrays to lists in plot_data

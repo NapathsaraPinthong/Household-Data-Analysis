@@ -5,7 +5,7 @@ function loadPlot(plotId, width = 600, height = 450) {
   var plotFileMap = {
     "gmm-plot": "./clustering_plot/gmm_plot_k5.json",
     "kmeans-plot": "./clustering_plot/kmeans_plot_k6.json",
-    "hierarchical-plot": "./clustering_plot/hierarchical_plot_k6.json",
+    "hierarchical-plot": "./clustering_plot/hierarchical_plot_k5.json",
   };
   var jsonFile = plotFileMap[plotId];
 
