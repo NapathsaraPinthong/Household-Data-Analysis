@@ -24,13 +24,13 @@ def is_dependent(member):
 
 # Determine fragile level based on criteria
 def determine_fg_level(row):
-    if row["total_income"] * 12  >= 100000 and row["num_dependents"] >= 1:
+    if row["avg_income"] * 12  >= 100000 and row["num_dependents"] >= 1:
         return 0
-    elif row["total_income"] * 12  < 100000 and row["num_dependents"] == 0:
+    elif row["avg_income"] * 12  < 100000 and row["num_dependents"] == 0:
         return 1
-    elif row["total_income"] * 12  < 100000 and 1 <= row["num_dependents"] <= 2:
+    elif row["avg_income"] * 12  < 100000 and 1 <= row["num_dependents"] <= 2:
         return 2
-    elif row["total_income"] * 12  < 100000 and row["num_dependents"] > 2:
+    elif row["avg_income"] * 12  < 100000 and row["num_dependents"] > 2:
         return 3
     else:
         return -1  
@@ -38,20 +38,29 @@ def determine_fg_level(row):
 
 # Determine income level based on criteria
 def determine_income_level(row):
-    if pd.isna(row["total_income"]):
+    if pd.isna(row["avg_income"]):
         return np.nan  
-    elif row["total_income"] * 12 < 100000:
+    elif row["avg_income"] * 12 < 100000:
         return 1
-    elif row["total_income"] * 12 >= 100000:
+    elif row["avg_income"] * 12 >= 100000:
         return 2
 
 
 def export_hh_income_level(df, path_name):
     household_summary = (
         df.groupby("hh_id")
-        .agg(total_income=pd.NamedAgg(column="sum_income", aggfunc="sum"))
+        .agg(
+            total_income=pd.NamedAgg(column="sum_income", aggfunc="sum"),
+            num_members=pd.NamedAgg(column="hh_id", aggfunc="size")
+        )
         .reset_index()
     )
+
+    # Calculate average income per person
+    household_summary["avg_income"] = (
+        household_summary["total_income"] / household_summary["num_members"]
+    )
+
     household_summary["income_level"] = household_summary.apply(
         determine_income_level, axis=1
     )
@@ -69,9 +78,16 @@ def export_hh_fg_level(df, path_name):
         .agg(
             total_income=pd.NamedAgg(column="sum_income", aggfunc="sum"),
             num_dependents=pd.NamedAgg(column="is_dependent", aggfunc="sum"),
+            num_members=pd.NamedAgg(column="hh_id", aggfunc="size")
         )
         .reset_index()
     )
+
+    # Calculate average income per person
+    household_summary["avg_income"] = (
+        household_summary["total_income"] / household_summary["num_members"]
+    )
+
     household_summary["fg_level"] = household_summary.apply(determine_fg_level, axis=1)
   
     export_df = household_summary[["hh_id", "fg_level"]].copy()
