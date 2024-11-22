@@ -75,8 +75,6 @@ node_embeddings = (
 )  
 node_targets = [g.node_type(node_id) for node_id in node_ids]
 
-trans = transform(n_components=2)
-node_embeddings_2d = trans.fit_transform(node_embeddings)
 t4_stop = perf_counter()
 print("Elapsed time during the TSNE in seconds:", t4_stop-t4_start)
 
@@ -85,7 +83,7 @@ t5_start = perf_counter()
 # Export a DataFrame of node embeddings to an Excel file
 df = pd.DataFrame({
     'node_id': node_ids,
-    'value': node_embeddings_2d.tolist(),
+    'value': node_embeddings.tolist(),
     'node_target': node_targets
 })
 
