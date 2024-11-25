@@ -3,7 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score, f1_score, classification_report
+from sklearn.metrics import f1_score, classification_report, confusion_matrix
+from time import perf_counter
 
 # Limit CPU usage for parallel processing
 os.environ["LOKY_MAX_CPU_COUNT"] = "8"
@@ -16,6 +17,8 @@ def process_and_evaluate_node_embeddings(node_embedding_files, output_dir='./res
     
     for file in node_embedding_files:
         print(f"Processing {file}...")
+        t_start = perf_counter()
+
         # Load node embeddings and household fragile level
         node_embeddings = pd.read_excel(file)
         hh_fg_level = pd.read_excel('../data/dataset/edge/hh-fg_level.xlsx', header=None, names=['id', 'fg_level'])
@@ -72,7 +75,22 @@ def process_and_evaluate_node_embeddings(node_embedding_files, output_dir='./res
         output_file = os.path.join(output_dir, f"classification_report_{walk_length}_{window_size}.xlsx")
         results_df.to_excel(output_file, index=True)
 
-        print(f"Classification report saved to {output_file}")
+        # Generate a confusion matrix
+        conf_matrix = confusion_matrix(y_test, y_pred)
+        conf_matrix_df = pd.DataFrame(
+            conf_matrix, 
+            index=[f"Actual {label}" for label in sorted(y.unique())],
+            columns=[f"Predicted {label}" for label in sorted(y.unique())]
+        )
+
+        # Combine the classification report and confusion matrix
+        with pd.ExcelWriter(os.path.join(output_dir, f"classification_report_{walk_length}_{window_size}.xlsx")) as writer:
+            results_df.to_excel(writer, sheet_name='Classification Report', index=True)
+            conf_matrix_df.to_excel(writer, sheet_name='Confusion Matrix', index=True)
+
+        t_stop = perf_counter()
+        print("Elapsed time in seconds:", t_stop-t_start)
+        print(f"Classification report and confusion matrix saved to {output_file}")
         
         results.append({'walk_length': walk_length, 'window_size': window_size, 'f1_score': f1})
 
@@ -98,15 +116,15 @@ def plot_results(results, output_dir):
 
 # List of node embedding files
 node_embedding_files = [
-    '../main/result/node_embeddings_50_5.xlsx',
-    '../main/result/node_embeddings_50_10.xlsx',
-    '../main/result/node_embeddings_50_15.xlsx',
-    '../main/result/node_embeddings_70_5.xlsx',
-    '../main/result/node_embeddings_70_10.xlsx',
-    '../main/result/node_embeddings_70_15.xlsx',
-    '../main/result/node_embeddings_100_5.xlsx',
-    '../main/result/node_embeddings_100_10.xlsx',
-    '../main/result/node_embeddings_100_15.xlsx'
+    '../main/result/node_embeddings_50_5_128.xlsx',
+    '../main/result/node_embeddings_50_10_128.xlsx',
+    '../main/result/node_embeddings_50_15_128.xlsx',
+    '../main/result/node_embeddings_70_5_128.xlsx',
+    '../main/result/node_embeddings_70_10_128.xlsx',
+    '../main/result/node_embeddings_70_15_128.xlsx',
+    '../main/result/node_embeddings_100_5_128.xlsx',
+    '../main/result/node_embeddings_100_10_128.xlsx',
+    '../main/result/node_embeddings_100_15_128.xlsx'
 ]
 
 # Run the function
