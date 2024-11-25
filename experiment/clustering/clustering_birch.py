@@ -3,12 +3,12 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 import ast
-from sklearn.mixture import GaussianMixture
+from sklearn.cluster import Birch
 from sklearn.manifold import TSNE
 from sklearn.preprocessing import StandardScaler
 from time import perf_counter
 
-def perform_gmm_clustering(file_path, k, output_excel_path, output_json_path):
+def perform_birch_clustering(file_path, k, output_excel_path, output_json_path):
     # Read the Excel file
     df = pd.read_excel(file_path)
 
@@ -29,9 +29,9 @@ def perform_gmm_clustering(file_path, k, output_excel_path, output_json_path):
 
     t_start = perf_counter()
 
-    # Apply Gaussian Mixture Models (GMM) on normalized data
-    gmm = GaussianMixture(n_components=k, random_state=42)
-    household_df['cluster'] = gmm.fit_predict(household_embeddings_scaled)
+    # Apply BIRCH clustering
+    birch = Birch(n_clusters=k, threshold=2.0)
+    household_df['cluster'] = birch.fit_predict(household_embeddings_scaled)
 
     t_stop = perf_counter()
     print("Elapsed time during the clustering in seconds:", t_stop-t_start)
@@ -39,7 +39,7 @@ def perform_gmm_clustering(file_path, k, output_excel_path, output_json_path):
     # Prepare the results for export
     cluster_df = household_df[['node_id', 'cluster']]
     cluster_df.to_excel(output_excel_path, index=False)
-    print(f"Household's cluster label by GMM saved to '{output_excel_path}'")
+    print(f"Household's cluster label by BIRCH saved to '{output_excel_path}'")
 
     # Use t-SNE for dimensionality reduction to 2D for visualization
     tsne = TSNE(n_components=2, random_state=42)
@@ -63,7 +63,7 @@ def perform_gmm_clustering(file_path, k, output_excel_path, output_json_path):
     
     fig.update_layout(
         title={
-            'text': f"Gaussian Mixture Models (GMM) clustering (k={k})",
+            'text': f"BIRCH clustering (k={k})",
             'x': 0.5,
             'xanchor': 'center'
         },
@@ -89,13 +89,13 @@ def perform_gmm_clustering(file_path, k, output_excel_path, output_json_path):
     with open(output_json_path, 'w') as f:
         json.dump(plot_data, f)
 
-    print(f"GMM plot data saved to '{output_json_path}'")
+    print(f"BIRCH plot data saved to '{output_json_path}'")
 
 # Example usage:
 k = 5  # Define the number of clusters
-perform_gmm_clustering(
+perform_birch_clustering(
     file_path='../../main/result/node_embeddings_70_10_128.xlsx',
     k=k,
-    output_excel_path='./result/gmm_clusters_k5_128.xlsx',
-    output_json_path='../../pages/clustering_plot/gmm_plot_k5_128.json'
+    output_excel_path='./result/birch_clusters_k5_128.xlsx',
+    output_json_path='../../pages/clustering_plot/birch_plot_k5_128.json'
 )

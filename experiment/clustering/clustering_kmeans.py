@@ -5,6 +5,8 @@ import plotly.graph_objects as go
 import ast
 from sklearn.cluster import KMeans
 from sklearn.manifold import TSNE
+from sklearn.preprocessing import StandardScaler
+from time import perf_counter
 
 def perform_kmeans_clustering(file_path, k, output_excel_path, output_json_path):
     # Read the Excel file
@@ -20,9 +22,18 @@ def perform_kmeans_clustering(file_path, k, output_excel_path, output_json_path)
     # Get the 128-dimensional embeddings for households
     household_embeddings = np.array(household_df['value'].tolist())
 
-    # Apply KMeans clustering
+    # Normalize the embeddings using StandardScaler
+    scaler = StandardScaler()
+    household_embeddings_scaled = scaler.fit_transform(household_embeddings)
+
+    t_start = perf_counter()
+
+    # Apply KMeans clustering on scaled data
     kmeans = KMeans(n_clusters=k, random_state=42)
-    household_df['cluster'] = kmeans.fit_predict(household_embeddings)
+    household_df['cluster'] = kmeans.fit_predict(household_embeddings_scaled)
+
+    t_stop = perf_counter()
+    print("Elapsed time during the clustering in seconds:", t_stop-t_start)
 
     # Prepare the results for export
     cluster_df = household_df[['node_id', 'cluster']]
@@ -31,7 +42,7 @@ def perform_kmeans_clustering(file_path, k, output_excel_path, output_json_path)
 
     # Dimensionality reduction with TSNE for visualization
     tsne = TSNE(n_components=2, random_state=42)
-    node_embeddings_2d = tsne.fit_transform(household_embeddings)
+    node_embeddings_2d = tsne.fit_transform(household_embeddings_scaled)
 
     # Create the plot
     fig = go.Figure()
