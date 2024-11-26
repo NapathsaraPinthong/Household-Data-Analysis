@@ -3,9 +3,9 @@ var plotData = {};
 // Function to load the selected clustering plot and highlight the selected button
 function loadPlot(plotId, width = 600, height = 450) {
   var plotFileMap = {
-    "gmm-plot": "./clustering_plot/gmm_plot_k5.json",
-    "kmeans-plot": "./clustering_plot/kmeans_plot_k6.json",
-    "hierarchical-plot": "./clustering_plot/hierarchical_plot_k5.json",
+    "gmm-plot": "./clustering_plot/gmm_plot_k7.json",
+    "kmeans-plot": "./clustering_plot/kmeans_plot_k8.json",
+    "birch-plot": "./clustering_plot/birch_plot_k8.json",
   };
   var jsonFile = plotFileMap[plotId];
 
@@ -47,7 +47,7 @@ $("#compare-fg").change(function () {
 });
 
 // Initialize with a default clustering plot and highlight the default button
-loadPlot("gmm-plot");
+loadPlot("kmeans-plot");
 
 // Get the current page filename from the URL
 const currentPage = window.location.pathname.split("/").pop();
