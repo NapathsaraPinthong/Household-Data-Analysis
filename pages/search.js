@@ -14,9 +14,9 @@ if (pageMap[currentPage]) {
 
 var plotData = {};
 
-// Function to load the GMM clustering plot
-function loadGMMPlot(width = 600, height = 450) {
-  var jsonFile = "./clustering_plot/gmm_plot_k5.json";
+// Function to load the clustering plot
+function loadPlot(width = 600, height = 450) {
+  var jsonFile = "./clustering_plot/kmeans_plot_k8.json";
 
   $.getJSON(jsonFile, function (data) {
     data.layout.width = width;
@@ -42,7 +42,7 @@ function loadGMMPlot(width = 600, height = 450) {
 
 // Define the options for each attribute
 const attributeValues = {
-  income_level: { 1: "Less than 100,000฿/year", 2: "More than 100,000฿/year" },
+  income_level: { 1: "Less than 100,000฿/person/year", 2: "More than 100,000฿/person/year" },
   solid: { 0: "Non-solid", 1: "Solid" },
   dependent: [0, 1, 2, 3, 4, 5, 6],
   age: { 1: "0-6", 2: "6-12", 3: "12-18", 4: "18-60", 5: "More than 60" },
@@ -271,6 +271,6 @@ $("#compare-ctr").change(function () {
 
 // Load data on page load
 $(document).ready(function () {
-  loadGMMPlot();
+  loadPlot();
   loadData();
 });

@@ -3,9 +3,9 @@ var plotData = {};
 // Function to load the selected clustering plot and highlight the selected button
 function loadPlot(plotId, width = 600, height = 450) {
   var plotFileMap = {
-    "gmm-plot": "./clustering_plot/gmm_plot_k7.json",
     "kmeans-plot": "./clustering_plot/kmeans_plot_k8.json",
     "birch-plot": "./clustering_plot/birch_plot_k8.json",
+    "gmm-plot": "./clustering_plot/gmm_plot_k7.json"
   };
   var jsonFile = plotFileMap[plotId];
 
@@ -25,7 +25,7 @@ function loadPlot(plotId, width = 600, height = 450) {
 
 // Load the fragile level plot when the checkbox is checked
 function loadFragileLevelPlot(width = 600, height = 450) {
-  var fragileLevelFile = "./clustering_plot/fragile_level_visualization.json";
+  var fragileLevelFile = "./clustering_plot/fg_level_plot.json";
 
   $.getJSON(fragileLevelFile, function (data) {
     plotData["fg-plot"] = data;

@@ -154,3 +154,9 @@ footer {
     height: 16px;
     accent-color: #43419A;
 }
+
+.descp-con {
+    padding: 16px 130px 0;
+    color: #47467A;
+    font-size: 14px;
+}
