@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from time import perf_counter
 
 # Load the data
-file_path = '../../../main/result/node_embeddings_70_10.xlsx'
+file_path = '../../../main/result/node_embeddings_100_5_128.xlsx'
 df = pd.read_excel(file_path)
 
 # Parse the 'value' column into 128-dimensional embeddings
@@ -28,7 +28,7 @@ scaler = StandardScaler()
 node_embeddings_scaled = scaler.fit_transform(node_embeddings)
 
 # Silhouette Analysis for K = 2 to 10
-k_values = range(2, 11)  # Adjusted K range
+k_values = range(2, 11)
 silhouette_scores = []
 
 for k in k_values:
@@ -54,6 +54,5 @@ plt.title('Silhouette Analysis for Optimal K')
 # Save the plot
 plot_path = './silhouette_K-means.png'
 plt.savefig(plot_path)
-plt.show()
 
 print(f"Silhouette plot saved at {plot_path}")

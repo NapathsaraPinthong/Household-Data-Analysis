@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from time import perf_counter
 
 # Load the data
-file_path = '../../../main/result/node_embeddings_70_10.xlsx'
+file_path = '../../../main/result/node_embeddings_100_5_128.xlsx'
 df = pd.read_excel(file_path)
 
 # Parse the 'value' column into 128-dimensional embeddings
@@ -28,7 +28,7 @@ scaler = StandardScaler()
 node_embeddings_scaled = scaler.fit_transform(node_embeddings)
 
 # Silhouette Analysis for K = 2 to 10
-k_values = range(2, 11)  # Adjusted K range
+k_values = range(2, 11)
 silhouette_scores = []
 
 for k in k_values:
@@ -46,15 +46,13 @@ for k in k_values:
 
 # Plot Silhouette Scores
 plt.figure(figsize=(10, 5))
-plt.plot(k_values, silhouette_scores, marker='o', label='Silhouette Score')
+plt.plot(k_values, silhouette_scores, marker='o')
 plt.xlabel('Number of Clusters (K)')
 plt.ylabel('Silhouette Score')
 plt.title('Silhouette Analysis for GMM Clustering')
-plt.legend()
 
 # Save the plot
 plot_path = './silhouette_GMM.png'
 plt.savefig(plot_path)
-plt.show()
 
 print(f"Silhouette plot saved at {plot_path}")

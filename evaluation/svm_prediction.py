@@ -117,13 +117,13 @@ def plot_results(results, output_dir):
 # List of node embedding files
 node_embedding_files = [
     '../main/result/node_embeddings_50_5_128.xlsx',
-    '../main/result/node_embeddings_50_10_128.xlsx',
-    '../main/result/node_embeddings_50_15_128.xlsx',
     '../main/result/node_embeddings_70_5_128.xlsx',
-    '../main/result/node_embeddings_70_10_128.xlsx',
-    '../main/result/node_embeddings_70_15_128.xlsx',
     '../main/result/node_embeddings_100_5_128.xlsx',
+    '../main/result/node_embeddings_50_10_128.xlsx',
+    '../main/result/node_embeddings_70_10_128.xlsx',
     '../main/result/node_embeddings_100_10_128.xlsx',
+    '../main/result/node_embeddings_50_15_128.xlsx',
+    '../main/result/node_embeddings_70_15_128.xlsx',
     '../main/result/node_embeddings_100_15_128.xlsx'
 ]
 
