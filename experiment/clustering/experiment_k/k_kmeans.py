@@ -49,7 +49,7 @@ plt.figure(figsize=(10, 5))
 plt.plot(k_values, silhouette_scores, marker='o')
 plt.xlabel('Number of Clusters (K)')
 plt.ylabel('Silhouette Score')
-plt.title('Silhouette Analysis for Optimal K')
+plt.title('Silhouette Analysis for K-Means Clustering')
 
 # Save the plot
 plot_path = './silhouette_K-means.png'

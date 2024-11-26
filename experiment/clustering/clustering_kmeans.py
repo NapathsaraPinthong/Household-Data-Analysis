@@ -91,10 +91,10 @@ def perform_kmeans_clustering(file_path, k, output_excel_path, output_json_path)
     print(f"Plot data saved to '{output_json_path}'")
 
 # Example usage:
-k = 6  # Define the number of clusters
+k = 8  # Define the number of clusters
 perform_kmeans_clustering(
-    file_path='../../main/result/node_embeddings_70_10_128.xlsx',
+    file_path='../../main/result/node_embeddings_100_5_128.xlsx',
     k=k,
-    output_excel_path='./result/kmeans_clusters_k6_128.xlsx',  # Adjust file name based on k
-    output_json_path='../../pages/clustering_plot/kmeans_plot_k6_128.json'  # Adjust file name based on k
+    output_excel_path='./result/kmeans_clusters_k8.xlsx',  # Adjust file name based on k
+    output_json_path='../../pages/clustering_plot/kmeans_plot_k8.json'  # Adjust file name based on k
 )
