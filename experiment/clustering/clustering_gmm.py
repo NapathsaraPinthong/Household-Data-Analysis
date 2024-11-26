@@ -92,10 +92,10 @@ def perform_gmm_clustering(file_path, k, output_excel_path, output_json_path):
     print(f"GMM plot data saved to '{output_json_path}'")
 
 # Example usage:
-k = 5  # Define the number of clusters
+k = 7  # Define the number of clusters
 perform_gmm_clustering(
-    file_path='../../main/result/node_embeddings_70_10_128.xlsx',
+    file_path='../../main/result/node_embeddings_100_5_128.xlsx',
     k=k,
-    output_excel_path='./result/gmm_clusters_k5_128.xlsx',
-    output_json_path='../../pages/clustering_plot/gmm_plot_k5_128.json'
+    output_excel_path='./result/gmm_clusters_k7.xlsx',
+    output_json_path='../../pages/clustering_plot/gmm_plot_k7.json'
 )
