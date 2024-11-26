@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from time import perf_counter
 
 # Load the data
-file_path = '../../../main/result/node_embeddings_70_10.xlsx'
+file_path = '../../../main/result/node_embeddings_100_5_128.xlsx'
 df = pd.read_excel(file_path)
 
 # Parse the 'value' column into 128-dimensional embeddings
@@ -44,7 +44,7 @@ for k in k_values:
 
     t_stop = perf_counter()
     elapsed_time = t_stop - t_start
-    
+
     print(f"K={k}, Silhouette Score={score:.4f}, Time Taken={elapsed_time:.2f} seconds")
 
 # Plot Silhouette Scores
@@ -57,6 +57,5 @@ plt.title('Silhouette Analysis for BIRCH Clustering')
 # Save the plot
 plot_path = './silhouette_BIRCH.png'
 plt.savefig(plot_path)
-plt.show()
 
 print(f"Silhouette plot saved at {plot_path}")
